@@ -3,10 +3,7 @@ import "./Agregar.css";
 import lit from "../assets/img/lit.jpg";
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
-
-
-
-
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
 // Configuración de Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyD0nElsGjStv447pqRCGkMEikDBufOPMqw",
@@ -17,35 +14,44 @@ const firebaseConfig = {
   appId: "1:465919322693:web:8392b6c800a27e1ed0512c"
 };
 
-
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const usersRef = collection(db, 'users');
+const musicasRef = collection(db, 'musicas');
+const storage = getStorage(app);
 
 export const Agregar = () => {
 
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
+  const [file, setFile] = useState(null);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      if (file) {
+        // Subir archivo a Firebase Storage
+        const storageRef = ref(storage, `musicas/${file.name}`);
+        await uploadBytes(storageRef, file);
+      }
+
       // Agregar datos a Firestore
-      await addDoc(usersRef, {
-        name: name,
-        password: password,
+      await addDoc(musicasRef, {
+        archivo: file ? file.name : '',
+        
       });
 
       console.log('Datos agregados correctamente');
-      setName('');
-      setPassword('');
+      setFile(null);
+      
     } catch (error) {
       console.error('Error al agregar datos: ', error);
     }
   };
-  
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+  };
   return (
     <section className="addColor">
       <div className="login-box">
@@ -57,24 +63,14 @@ export const Agregar = () => {
           <form onSubmit={handleSubmit}>
             <div className="user-box">
               <input
-                type="text"
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                type="file"
+                name="file"
+                onChange={handleFileChange}
                 required
               />
-              <label>Username</label>
+              <label>Archivo de música</label>
             </div>
-            <div className="user-box">
-              <input
-                type="password"
-                name="pass"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <label>Password</label>
-            </div>
+            
             <button type="submit">
               <span></span>
               <span></span>
