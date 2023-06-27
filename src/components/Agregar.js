@@ -1,6 +1,6 @@
 import {React, useState} from "react";
-import "./Agregar.css";
-import lit from "../assets/img/lit.jpg";
+
+
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
@@ -53,15 +53,15 @@ export const Agregar = () => {
     setFile(selectedFile);
   };
   return (
-    <section className="addColor">
-      <div className="login-box">
-        <div className="image-container">
-          <img src={lit} alt="lit" />
+    <section className="adColor">
+      <div className="lgin-box">
+        <div className="iage-container">
+          
         </div>
-        <div className="content-container">
+        <div className="contnt-container">
           <h2>Agregar</h2>
           <form onSubmit={handleSubmit}>
-            <div className="user-box">
+            <div className="uer-box">
               <input
                 type="file"
                 name="file"

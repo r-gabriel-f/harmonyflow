@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "bootstrap": "^5.3.0",
     "firebase": "^9.22.2",
     "firestore-storage": "^6.1.6",
     "firestore-storage-core": "^6.0.9",
